@@ -34,6 +34,19 @@ let game = {
             },
         },
 
+
+        clearBoard: function() {
+
+          for (let i = 0; i < 10; i++) {
+            this.board[i] = false;
+            console.log("square" + [i] + ": false");
+          }
+
+          database.ref().set({
+              board: game.board,
+            });
+        },
+
             fillBoard: function() {
 
                 for (i = 0; i < 10; i++) {
@@ -80,12 +93,14 @@ let game = {
 
         // excludes wins for opponent when player picks a square
 
-                    let possibleWins;
+                    let opponentWins; let possibleWins;
 
                 if (opponent === "O") {
-                    possibleWins = game.O.possible;
-                } else if (opponent === "X") {
+                    opponentWins = game.O.possible;
                     possibleWins = game.X.possible;
+                } else if (opponent === "X") {
+                    opponentWins = game.X.possible;
+                    possibleWins = game.O.possible;
                 }
 
                 switch(square) {
@@ -95,9 +110,9 @@ let game = {
                         // 123, 147, 159
 
 
-                        possibleWins[H1] = false;
-                        possibleWins[V1] = false;
-                        possibleWins[D1] = false;
+                        opponentWins.H1 = false;
+                        opponentWins.V1 = false;
+                        opponentWins.D1 = false;
 
 
                         break;
@@ -109,8 +124,8 @@ let game = {
 
                         // wins: H1, V2
 
-                        possibleWins[H1] = false;
-                        possibleWins[V2] = false;
+                        opponentWins.H1 = false;
+                        opponentWins.V2 = false;
 
                         break;
                     case 3:
@@ -120,9 +135,9 @@ let game = {
                         console.log("V3 possible: " + game.O.possible.hasOwnProperty("V3"));
                         console.log("D2 possible: " + game.O.possible.hasOwnProperty("D2"));
 
-                        possibleWins[H1] = false;
-                        possibleWins[V3] = false;
-                        possibleWins[D2] = false;
+                        opponentWins.H1 = false;
+                        opponentWins.V3 = false;
+                        opponentWins.D2 = false;
 
                         // wins: H1, V3, D2
 
@@ -132,17 +147,17 @@ let game = {
 
                         // wins: H2, V1
 
-                        possibleWins[H2] = false;
-                        possibleWins[V1] = false;
+                        opponentWins.H2 = false;
+                        opponentWins.V1 = false;
 
                         break;
                     case 5:
                         // 258, 456, 159, 357
 
-                        possibleWins[H2] = false;
-                        possibleWins[V2] = false;
-                        possibleWins[D1] = false;
-                        possibleWins[D2] = false;
+                        opponentWins.H2 = false;
+                        opponentWins.V2 = false;
+                        opponentWins.D1 = false;
+                        opponentWins.D2 = false;
 
                         // wins: H2, V2, D1, D2
 
@@ -150,8 +165,8 @@ let game = {
                     case 6:
                         // 456, 369
 
-                        possibleWins[H2] = false;
-                        possibleWins[V3] = false;
+                        opponentWins.H2 = false;
+                        opponentWins.V3 = false;
 
                         // wins: H2, V3
 
@@ -159,9 +174,9 @@ let game = {
                     case 7:
                         // 789, 147, 357
 
-                        possibleWins[H3] = false;
-                        possibleWins[V1] = false;
-                        possibleWins[D2] = false;
+                        opponentWins.H3 = false;
+                        opponentWins.V1 = false;
+                        opponentWins.D2 = false;
 
                         // wins: H3, V1, D2
 
@@ -169,8 +184,8 @@ let game = {
                     case 8:
                         // 789, 258
 
-                        possibleWins[H3] = false;
-                        possibleWins[V2] = false;
+                        opponentWins.H3 = false;
+                        opponentWins.V2 = false;
 
                         // wins: H3, V2
 
@@ -178,9 +193,9 @@ let game = {
                     case 9:
                         // 789, 369, 159
 
-                        possibleWins[H3] = false;
-                        possibleWins[V3] = false;
-                        possibleWins[D1] = false;
+                        opponentWins.H3 = false;
+                        opponentWins.V3 = false;
+                        opponentWins.D1 = false;
 
                         // wins: H3, V3, D1
 
