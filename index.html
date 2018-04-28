@@ -142,24 +142,23 @@ $(document).ready(function() {
           // data attribute "square" with number of square (1-9)
           squareNum = $(this).data("square");
 
-
-
-          // function to exclude opponents wins based on move,
-          // then check for wins still possible for the player
-                // game.checkAdjacent(squareNum);
-
           // remove the cursor class, use the clickX/O function to change the game.board array,
           // finally toggle the move variable to the next player
+
+          // function to exclude opponents wins based on move,
+          // will be followed by function to check for possible wins for player
 
           // fill the square with an X or O depending on who's move it is
 
           if (game.move === "O" ) {
               $(this).removeClass("cursor-o");
               game.oClick(squareNum);
+              game.excludeOpponentWins("X", squareNum);
               game.move = "X";
           } else if (game.move === "X" ) {
               $(this).removeClass("cursor-o");
               game.xClick(squareNum);
+              game.excludeOpponentWins("O", squareNum);
               game.move = "O";
           };
 

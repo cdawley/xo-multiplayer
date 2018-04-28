@@ -76,19 +76,29 @@ let game = {
 
 
     // fill these out to check possible wins for each click
-            checkAdjacent: function(square) {
-                //
+            excludeOpponentWins: function(opponent, square) {
+
+        // excludes wins for opponent when player picks a square
+
+                    let possibleWins;
+
+                if (opponent === "O") {
+                    possibleWins = game.O.possible;
+                } else if (opponent === "X") {
+                    possibleWins = game.X.possible;
+                }
+
                 switch(square) {
+
 
                     case 1:
                         // 123, 147, 159
 
-                        console.log("H1 possible: " + game.O.possible.hasOwnProperty("H1"));
-                        console.log("V1 possible: " + game.O.possible.hasOwnProperty("V1"));
-                        console.log("D1 possible: " + game.O.possible.hasOwnProperty("D1"));
 
+                        possibleWins[H1] = false;
+                        possibleWins[V1] = false;
+                        possibleWins[D1] = false;
 
-                        // wins: H1, V1, D1
 
                         break;
                     case 2:
@@ -99,6 +109,9 @@ let game = {
 
                         // wins: H1, V2
 
+                        possibleWins[H1] = false;
+                        possibleWins[V2] = false;
+
                         break;
                     case 3:
                         // 123, 369
@@ -106,6 +119,10 @@ let game = {
                         console.log("H1 possible: " + game.O.possible.hasOwnProperty("H1"));
                         console.log("V3 possible: " + game.O.possible.hasOwnProperty("V3"));
                         console.log("D2 possible: " + game.O.possible.hasOwnProperty("D2"));
+
+                        possibleWins[H1] = false;
+                        possibleWins[V3] = false;
+                        possibleWins[D2] = false;
 
                         // wins: H1, V3, D2
 
@@ -115,9 +132,17 @@ let game = {
 
                         // wins: H2, V1
 
+                        possibleWins[H2] = false;
+                        possibleWins[V1] = false;
+
                         break;
                     case 5:
                         // 258, 456, 159, 357
+
+                        possibleWins[H2] = false;
+                        possibleWins[V2] = false;
+                        possibleWins[D1] = false;
+                        possibleWins[D2] = false;
 
                         // wins: H2, V2, D1, D2
 
@@ -125,11 +150,18 @@ let game = {
                     case 6:
                         // 456, 369
 
+                        possibleWins[H2] = false;
+                        possibleWins[V3] = false;
+
                         // wins: H2, V3
 
                         break;
                     case 7:
                         // 789, 147, 357
+
+                        possibleWins[H3] = false;
+                        possibleWins[V1] = false;
+                        possibleWins[D2] = false;
 
                         // wins: H3, V1, D2
 
@@ -137,11 +169,18 @@ let game = {
                     case 8:
                         // 789, 258
 
+                        possibleWins[H3] = false;
+                        possibleWins[V2] = false;
+
                         // wins: H3, V2
 
                         break;
                     case 9:
                         // 789, 369, 159
+
+                        possibleWins[H3] = false;
+                        possibleWins[V3] = false;
+                        possibleWins[D1] = false;
 
                         // wins: H3, V3, D1
 
