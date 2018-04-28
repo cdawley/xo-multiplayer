@@ -1,0 +1,33 @@
+table {
+    margin: 1em;
+}
+
+td {
+    border: 1px solid white;
+    height: 80px;
+    width: 80px;
+
+    font-family: 'Black Han Sans', sans-serif;
+    text-align: center;
+    font-size: 3rem;
+    color: white;
+}
+
+td.square-black {
+     background-color: black;
+}
+
+/*
+td.square-white {
+    background-color: white;
+}
+*/
+
+
+.cursor-x:hover {
+    cursor: url("../images/x-cursor.png"), auto;
+}
+
+.cursor-o:hover {
+    cursor: url("../images/o-cursor.png"), auto;
+}

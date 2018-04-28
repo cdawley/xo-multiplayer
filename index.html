@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multiplayer Tic-Tac-Toe</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Black+Han+Sans" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+<body>
+
+
+<div class="container-fluid">
+
+    <div class="row" id="tic-tac-toe">
+
+        <table>
+            <tr>
+                <td class="square-black cursor-o" id="square-1" data-square="1"></td>
+                <td class="square-black cursor-x" id="square-2" data-square="2"></td>
+                <td class="square-black cursor-o" id="square-3" data-square="3"></td>
+            </tr>
+            <tr>
+                <td class="square-black cursor-x" id="square-4" data-square="4"></td>
+                <td class="square-black cursor-x" id="square-5" data-square="5"></td>
+                <td class="square-black cursor-x" id="square-6" data-square="6"></td>
+            </tr>
+            <tr>
+                <td class="square-black cursor-x" id="square-7" data-square="7"></td>
+                <td class="square-black cursor-o" id="square-8" data-square="8"></td>
+                <td class="square-black cursor-o" id="square-9" data-square="9"></td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+
+
+<!--Jquery min (Bootstrap's slim does not support Ajax!)-->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<!--'Popper', and Bootstrap JS files-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- FireBase -->
+<script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+
+<!-- Maybe incorporate Moment.JS, for fun & education? -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js" type="text/javascript"></script>
+
+<!-- tictactoe.js library with 'game' object -->
+<script src="assets/javascript/tictactoe.js" type="text/javascript"></script>
+
+<!-- Database-related JavaScript -->
+<script src="assets/javascript/database.js" type="text/javascript">
+
+</script>
+
+  <!-- JQuery-related JavaScript -->
+<script>
+
+$(document).ready(function() {
+
+// this fills the squares based on what cursor class it has, just an example
+  let allTD = $("table").find("td");
+/*
+  for (i = 0; i < allTD.length; i++) {
+    if ($(allTD[i]).hasClass("cursor-o")) { $(allTD[i]).html("O") };
+    if ($(allTD[i]).hasClass("cursor-x")) { $(allTD[i]).html("X") };
+  };
+*/
+
+/*
+for (i = 1; i < 10; i++) {
+
+    if (i % 2 == 0) {
+        gameSetup.push("x");
+    } else {
+        gameSetup.push("o");
+    };
+};
+
+*/
+
+//gameSetup[4] = "n";
+
+game.fillBoard();
+
+    $("td").on("click", function() {
+
+// click square with "O", clear text
+      if ($(this).html() == "O") {
+        $(this).html("");
+        return;
+      };
+
+// click square with "X", clear text
+      if ($(this).html() == "X") {
+        $(this).html("");
+        return;
+      };
+
+// click empty square, replace text with X/O depending on cursor- class
+      if ($(this).html() == "") {
+
+          // x or o click ??
+
+          squareNum = $(this).data("square");
+          console.log("clicked square " + squareNum);
+
+          game.checkAdjacent(squareNum);
+
+
+          if ($(this).hasClass("cursor-o")) {
+
+              game.oClick(squareNum);
+              return;
+          };
+
+          if ($(this).hasClass("cursor-x")) {
+              game.xClick(squareNum);
+              return;
+          };
+
+      };
+
+
+    });
+
+//$("td").hover(function() { $(this).addClass("cursor-o") })
+
+
+
+});
+
+//check write to firebase function
+
+
+</script>
+
+</body>
+</html>
