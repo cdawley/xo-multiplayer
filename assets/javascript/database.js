@@ -1,16 +1,43 @@
-var config = {
-  apiKey: "AIzaSyBgjWFzG2d9oGSxmQTCssg0a9z0r-gMfHk",
-  authDomain: "tic-tac-toe-2a4cd.firebaseapp.com",
-  databaseURL: "https://tic-tac-toe-2a4cd.firebaseio.com",
-  projectId: "tic-tac-toe-2a4cd",
-  storageBucket: "tic-tac-toe-2a4cd.appspot.com",
-  messagingSenderId: "963247441514"
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBgjWFzG2d9oGSxmQTCssg0a9z0r-gMfHk",
+    authDomain: "tic-tac-toe-2a4cd.firebaseapp.com",
+    databaseURL: "https://tic-tac-toe-2a4cd.firebaseio.com",
+    projectId: "tic-tac-toe-2a4cd",
+    storageBucket: "tic-tac-toe-2a4cd.appspot.com",
+    messagingSenderId: "963247441514"
   };
 
   firebase.initializeApp(config);
 
 
-let dbase = firebase.database();
+let database = firebase.database();
+
+
+  database.ref().on("value", function(snapshot) {
+
+      // If database has data for the gas,e
+      if (snapshot.child("board").exists()) { //} && snapshot.child("highPrice").exists()) {
+          // Set the variables for highBidder/highPrice equal to the stored values.
+          game.board = snapshot.val().board;
+          //highPrice = parseInt(snapshot.val().highPrice);
+      }
+
+      // If Firebase does not have highPrice and highBidder values stored, they remain the same as the
+      // values we set when we initialized the variables.
+      // In either case, we want to log the values to console and display them on the page.
+      console.log(game.board);
+      game.fillBoard();
+
+      // If any errors are experienced, log them to console.
+  }, function(errorObject) {
+      console.log("The read failed: " + errorObject.code);
+  });
+
+
+
+
+/*
 
 let gameRef = dbase.ref().child("games");
 

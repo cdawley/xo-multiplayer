@@ -72,42 +72,45 @@ $(document).ready(function() {
 
 // this fills the squares based on what cursor class it has, just an example
   let allTD = $("table").find("td");
-/*
-  for (i = 0; i < allTD.length; i++) {
-    if ($(allTD[i]).hasClass("cursor-o")) { $(allTD[i]).html("O") };
-    if ($(allTD[i]).hasClass("cursor-x")) { $(allTD[i]).html("X") };
-  };
-*/
 
-/*
-for (i = 1; i < 10; i++) {
-
-    if (i % 2 == 0) {
-        gameSetup.push("x");
-    } else {
-        gameSetup.push("o");
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyBgjWFzG2d9oGSxmQTCssg0a9z0r-gMfHk",
+        authDomain: "tic-tac-toe-2a4cd.firebaseapp.com",
+        databaseURL: "https://tic-tac-toe-2a4cd.firebaseio.com",
+        projectId: "tic-tac-toe-2a4cd",
+        storageBucket: "tic-tac-toe-2a4cd.appspot.com",
+        messagingSenderId: "963247441514"
     };
-};
 
-*/
+    firebase.initializeApp(config);
 
-//gameSetup[4] = "n";
 
-game.fillBoard();
+    let database = firebase.database();
+
+
+    database.ref().on("value", function(snapshot) {
+
+        // If database has data for the gas,e
+        if (snapshot.child("board").exists()) { //} && snapshot.child("highPrice").exists()) {
+            // Set the variables for highBidder/highPrice equal to the stored values.
+            game.board = snapshot.val().board;
+            //highPrice = parseInt(snapshot.val().highPrice);
+        }
+
+        // If Firebase does not have highPrice and highBidder values stored, they remain the same as the
+        // values we set when we initialized the variables.
+        // In either case, we want to log the values to console and display them on the page.
+        console.log(game.board);
+        game.fillBoard();
+
+        // If any errors are experienced, log them to console.
+    }, function(errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    });
 
     $("td").on("click", function() {
 
-// click square with "O", clear text
-      if ($(this).html() == "O") {
-        $(this).html("");
-        return;
-      };
-
-// click square with "X", clear text
-      if ($(this).html() == "X") {
-        $(this).html("");
-        return;
-      };
 
 // click empty square, replace text with X/O depending on cursor- class
       if ($(this).html() == "") {
@@ -117,21 +120,29 @@ game.fillBoard();
           squareNum = $(this).data("square");
           console.log("clicked square " + squareNum);
 
+          // function to exclude opponents wins based on move,
+          // then check for wins still possible for the player
           game.checkAdjacent(squareNum);
 
 
-          if ($(this).hasClass("cursor-o")) {
+          if (game.move === "O" ) {
 
               game.oClick(squareNum);
+
               return;
           };
 
-          if ($(this).hasClass("cursor-x")) {
+          if (game.move === "X" ) {
+
               game.xClick(squareNum);
+              game.move = "O";
               return;
           };
 
-      };
+      } else {
+          // if square is not empty, return (do nothing)
+          return;
+      }
 
 
     });

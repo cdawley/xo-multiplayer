@@ -137,6 +137,7 @@ let game = {
     xClick: function(squareNumber) {
 
         let square = $("#square-" + squareNumber);
+        game.board[squareNumber] = "x";
         square.html("X");
 
     },
@@ -144,6 +145,7 @@ let game = {
 
     oClick: function(squareNumber) {
         let square = $("#square-" + squareNumber);
+        game.board[squareNumber] = "o";
         square.html("O");
     },
 
