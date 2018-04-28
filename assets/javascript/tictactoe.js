@@ -2,18 +2,21 @@ let game = {
 
 
     // first element is null so array indexes correspond to board squares
-    board: [null, false, false, false, "x", "o", false, "x", false, false],
+    board: [null, false, false, false, false, false, false, false, false, false],
 
+    move: "X",
+
+// these nested objects will contain data on wins available for each player
 
         O: {
 
             possible: {
                 // horizontal lines
-                H1: {}, H2: {}, H3: {},
+                H1: true, H2: true, H3: true,
                 // vertical lines
-                V1: {}, V2: {}, V3: {},
+                V1: true, V2: true, V3: true,
                 // diagonal lines
-                D1: {}, D2: {},
+                D1: true, D2: true,
 
             },
         },
@@ -22,11 +25,11 @@ let game = {
 
             possible: {
                 // horizontal lines
-                H1: {}, H2: {}, H3: {},
+                H1: true, H2: true, H3: true,
                 // vertical lines
-                V1: {}, V2: {}, V3: {},
+                V1: true, V2: true, V3: true,
                 // diagonal lines
-                D1: {}, D2: {},
+                D1: true, D2: true,
 
             },
         },
@@ -36,11 +39,11 @@ let game = {
                 for (i = 0; i < 10; i++) {
 
                     switch (game.board[i]) {
-                        case "o":
+                        case "O":
                             $("#square-" + i).html("O");
                             console.log("O");
                             break;
-                        case "x":
+                        case "X":
                             $("#square-" + i).html("X");
                             console.log("X");
                             break;
@@ -48,13 +51,28 @@ let game = {
                             console.log("square " + i + " is empty.");
                             break;
                         default:
-                            console.log("null works");
+                            // null value at index 0
                             break;
                     }
 
                 }
 
             },
+
+    xClick: function(squareNumber) {
+
+        let square = $("#square-" + squareNumber);
+        game.board[squareNumber] = "X";
+        square.html("X");
+
+    },
+
+
+    oClick: function(squareNumber) {
+        let square = $("#square-" + squareNumber);
+        game.board[squareNumber] = "O";
+        square.html("O");
+    },
 
 
     // fill these out to check possible wins for each click
@@ -133,21 +151,5 @@ let game = {
 
 
             },
-
-    xClick: function(squareNumber) {
-
-        let square = $("#square-" + squareNumber);
-        game.board[squareNumber] = "x";
-        square.html("X");
-
-    },
-
-
-    oClick: function(squareNumber) {
-        let square = $("#square-" + squareNumber);
-        game.board[squareNumber] = "o";
-        square.html("O");
-    },
-
 
 };

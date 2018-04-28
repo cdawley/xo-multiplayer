@@ -23,19 +23,19 @@
 
         <table>
             <tr>
-                <td class="square-black cursor-o" id="square-1" data-square="1"></td>
-                <td class="square-black cursor-x" id="square-2" data-square="2"></td>
-                <td class="square-black cursor-o" id="square-3" data-square="3"></td>
+                <td class="square-black" id="square-1" data-square="1"></td>
+                <td class="square-black" id="square-2" data-square="2"></td>
+                <td class="square-black" id="square-3" data-square="3"></td>
             </tr>
             <tr>
-                <td class="square-black cursor-x" id="square-4" data-square="4"></td>
-                <td class="square-black cursor-x" id="square-5" data-square="5"></td>
-                <td class="square-black cursor-x" id="square-6" data-square="6"></td>
+                <td class="square-black" id="square-4" data-square="4"></td>
+                <td class="square-black" id="square-5" data-square="5"></td>
+                <td class="square-black" id="square-6" data-square="6"></td>
             </tr>
             <tr>
-                <td class="square-black cursor-x" id="square-7" data-square="7"></td>
-                <td class="square-black cursor-o" id="square-8" data-square="8"></td>
-                <td class="square-black cursor-o" id="square-9" data-square="9"></td>
+                <td class="square-black" id="square-7" data-square="7"></td>
+                <td class="square-black" id="square-8" data-square="8"></td>
+                <td class="square-black" id="square-9" data-square="9"></td>
             </tr>
         </table>
 
@@ -68,13 +68,13 @@
   <!-- JQuery-related JavaScript -->
 <script>
 
-$(document).ready(function() {
+
 
 // this fills the squares based on what cursor class it has, just an example
   let allTD = $("table").find("td");
 
     // Initialize Firebase
-    var config = {
+    let config = {
         apiKey: "AIzaSyBgjWFzG2d9oGSxmQTCssg0a9z0r-gMfHk",
         authDomain: "tic-tac-toe-2a4cd.firebaseapp.com",
         databaseURL: "https://tic-tac-toe-2a4cd.firebaseio.com",
@@ -88,19 +88,22 @@ $(document).ready(function() {
 
     let database = firebase.database();
 
+$(document).ready(function() {
+
 
     database.ref().on("value", function(snapshot) {
 
-        // If database has data for the gas,e
-        if (snapshot.child("board").exists()) { //} && snapshot.child("highPrice").exists()) {
-            // Set the variables for highBidder/highPrice equal to the stored values.
+        // If database has data for the game
+        if (snapshot.child("board").exists() && snapshot.child("move").exists()) {
+
+            // Set variable in game object to stored values from database.
             game.board = snapshot.val().board;
-            //highPrice = parseInt(snapshot.val().highPrice);
+            game.move = snapshot.val().move;
+
         }
 
-        // If Firebase does not have highPrice and highBidder values stored, they remain the same as the
-        // values we set when we initialized the variables.
-        // In either case, we want to log the values to console and display them on the page.
+        // if values aren't stored, the game is started with default values (new game)
+
         console.log(game.board);
         game.fillBoard();
 
@@ -109,51 +112,81 @@ $(document).ready(function() {
         console.log("The read failed: " + errorObject.code);
     });
 
+
+
+// event listener for mouse over on a square... changes cursor for turn X/O if square is empty
+    $("td").hover(
+        //mouse on
+            function () {
+                if ($(this).html() == "" && game.move === "X") {
+                    $(this).addClass("cursor-x");
+                } else if ($(this).html() == "" && game.move === "O") {
+                    $(this).addClass("cursor-o");
+                }
+            },
+        // mouse off
+            function () {
+                if ($(this).html() == "" && game.move === "X") {
+                    $(this).removeClass("cursor-x");
+                } else if ($(this).html() == "" && game.move === "O") {
+                    $(this).removeClass("cursor-o");
+                }
+            });
+
+// event listener for click on a square
     $("td").on("click", function() {
 
-
-// click empty square, replace text with X/O depending on cursor- class
+// if the square is empty....
       if ($(this).html() == "") {
 
-          // x or o click ??
-
+          // data attribute "square" with number of square (1-9)
           squareNum = $(this).data("square");
-          console.log("clicked square " + squareNum);
+
+
 
           // function to exclude opponents wins based on move,
           // then check for wins still possible for the player
-          game.checkAdjacent(squareNum);
+                // game.checkAdjacent(squareNum);
 
+          // remove the cursor class, use the clickX/O function to change the game.board array,
+          // finally toggle the move variable to the next player
+
+          // fill the square with an X or O depending on who's move it is
 
           if (game.move === "O" ) {
-
+              $(this).removeClass("cursor-o");
               game.oClick(squareNum);
-
-              return;
-          };
-
-          if (game.move === "X" ) {
-
+              game.move = "X";
+          } else if (game.move === "X" ) {
+              $(this).removeClass("cursor-o");
               game.xClick(squareNum);
               game.move = "O";
-              return;
           };
+
+
+          // store new game values to database
+
+          database.ref().set({
+              board: game.board,
+              move: game.move
+          });
+
+
+          console.log("click for " + game.move + " placed on square " + squareNum);
+
 
       } else {
           // if square is not empty, return (do nothing)
-          return;
+
+          console.log("square is not empty");
       }
 
 
     });
 
-//$("td").hover(function() { $(this).addClass("cursor-o") })
-
-
 
 });
 
-//check write to firebase function
 
 
 </script>
